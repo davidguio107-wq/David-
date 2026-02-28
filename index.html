@@ -1,27 +1,162 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Para mi goldita 💜</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #5f0a87, #a4508b, #2c003e);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-    }
+<meta charset="UTF-8">
+<title>Mi Universo</title>
+<style>
+body{
+margin:0;
+overflow:hidden;
+background:black;
+font-family:Arial, sans-serif;
+touch-action:none;
+}
 
-    h1 {
-      color: white;
-      font-size: 40px;
-      text-shadow: 0 0 20px #ff66ff, 0 0 40px #cc00ff;
-      text-align: center;
-    }
-  </style>
+#galaxia{
+position:absolute;
+width:100%;
+height:100%;
+overflow:hidden;
+transform-origin:center center;
+}
+
+.planeta{
+position:absolute;
+border-radius:50%;
+box-shadow:0 0 60px rgba(255,255,255,0.4);
+}
+
+#planeta1{
+width:300px;
+height:300px;
+background:radial-gradient(circle at 30% 30%, #ff77ff, #5e00a8);
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+}
+
+#planeta2{
+width:80px;
+height:80px;
+background:radial-gradient(circle at 30% 30%, #00d4ff, #0044ff);
+left:70%;
+top:40%;
+animation:orbita 10s linear infinite;
+}
+
+@keyframes orbita{
+from{ transform:rotate(0deg) translateX(200px) rotate(0deg); }
+to{ transform:rotate(360deg) translateX(200px) rotate(-360deg); }
+}
+
+.texto{
+position:absolute;
+color:white;
+font-size:14px;
+white-space:nowrap;
+animation:flotar 60s linear infinite;
+}
+
+@keyframes flotar{
+from{ transform:translateY(0px); }
+to{ transform:translateY(-2000px); }
+}
+
+#musicBtn{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+padding:12px 25px;
+background:#ff4da6;
+color:white;
+border:none;
+border-radius:30px;
+font-size:16px;
+}
+</style>
 </head>
 <body>
-  <h1>Te amo mi goldita hermosa 💜</h1>
+
+<div id="galaxia">
+<div id="planeta1" class="planeta"></div>
+<div id="planeta2" class="planeta"></div>
+</div>
+
+<input type="file" id="musicInput" accept="audio/*" hidden>
+<button id="musicBtn">Elegir Música 🎵</button>
+
+<script>
+let galaxia = document.getElementById("galaxia");
+let scale = 1;
+let posX = 0;
+let posY = 0;
+let startX, startY;
+let dragging = false;
+
+document.addEventListener("touchstart", e=>{
+dragging=true;
+startX = e.touches[0].clientX - posX;
+startY = e.touches[0].clientY - posY;
+});
+
+document.addEventListener("touchmove", e=>{
+if(!dragging) return;
+posX = e.touches[0].clientX - startX;
+posY = e.touches[0].clientY - startY;
+galaxia.style.transform = `translate(${posX}px,${posY}px) scale(${scale})`;
+});
+
+document.addEventListener("touchend", ()=> dragging=false);
+
+document.addEventListener("wheel", e=>{
+scale += e.deltaY * -0.001;
+scale = Math.min(Math.max(.5, scale), 3);
+galaxia.style.transform = `translate(${posX}px,${posY}px) scale(${scale})`;
+});
+
+let palabras = [
+"Te amo mi Goldix hermosa 💕",
+"Perdóname mi amor 🥺",
+"No quiero perderte",
+"Eres lo mejor que tengo",
+"Mereces el universo entero ✨",
+"Mi reina 👑",
+"Mi perla 💎",
+"Mi princesa 👑",
+"Mi luna 🌙",
+"Mi sol ☀️",
+"Mi estrella ✨",
+"Mi vida ❤️",
+"Mi bb 🧸",
+"Mi goldita 😘",
+"Mi galaxia favorita 🌌"
+];
+
+for(let i=0;i<1000;i++){
+let span = document.createElement("div");
+span.className="texto";
+span.innerText = palabras[Math.floor(Math.random()*palabras.length)];
+span.style.left = Math.random()*3000+"px";
+span.style.top = Math.random()*3000+"px";
+span.style.fontSize = (10 + Math.random()*20)+"px";
+galaxia.appendChild(span);
+}
+
+let musicBtn = document.getElementById("musicBtn");
+let musicInput = document.getElementById("musicInput");
+let audio = new Audio();
+
+musicBtn.onclick = ()=> musicInput.click();
+
+musicInput.onchange = function(){
+let file = this.files[0];
+if(file){
+audio.src = URL.createObjectURL(file);
+audio.play();
+}
+}
+</script>
+
 </body>
 </html>
