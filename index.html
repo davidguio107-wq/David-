@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Mi Goldita 💜</title>
+
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  background: radial-gradient(ellipse at bottom, #2b0040 0%, #000000 100%);
+  font-family: Arial, sans-serif;
+}
+
+h1{
+  position:absolute;
+  top:40px;
+  width:100%;
+  text-align:center;
+  color:white;
+  font-size:22px;
+  background: rgba(0,0,0,0.4);
+  padding:10px;
+  border-radius:20px;
+}
+
+canvas{
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+audio{
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+}
+</style>
+</head>
+
+<body>
+
+<h1>Te amo mi goldita hermosa 💛</h1>
+
+<canvas id="stars"></canvas>
+
+<audio controls>
+  <source src="" type="audio/mpeg">
+  Tu navegador no soporta audio.
+</audio>
+
+<script>
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+
+for(let i=0; i<300; i++){
+  stars.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    radius: Math.random()*2,
+    speed: Math.random()*0.5
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "white";
+  stars.forEach(star=>{
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.radius, 0, Math.PI*2);
+    ctx.fill();
+    star.y += star.speed;
+    if(star.y > canvas.height){
+      star.y = 0;
+      star.x = Math.random()*canvas.width;
+    }
+  });
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+
+</body>
+</html>
